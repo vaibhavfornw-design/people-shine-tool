@@ -35,10 +35,15 @@ function LeavePage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("leave_requests")
-        .select("*, profiles:user_id(full_name, email)")
+        .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      const ids = Array.from(new Set(data.map((d) => d.user_id)));
+      const { data: profs } = ids.length
+        ? await supabase.from("profiles").select("id, full_name, email").in("id", ids)
+        : { data: [] as { id: string; full_name: string | null; email: string | null }[] };
+      const map = new Map((profs ?? []).map((p) => [p.id, p]));
+      return data.map((r) => ({ ...r, profile: map.get(r.user_id) ?? null }));
     },
     enabled: !!user,
   });
@@ -133,7 +138,7 @@ function LeavePage() {
             {!isLoading && requests.length === 0 && <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No requests yet.</TableCell></TableRow>}
             {requests.map((r: any) => (
               <TableRow key={r.id}>
-                {isHR && <TableCell className="font-medium">{r.profiles?.full_name ?? r.profiles?.email ?? "—"}</TableCell>}
+                {isHR && <TableCell className="font-medium">{r.profile?.full_name ?? r.profile?.email ?? "—"}</TableCell>}
                 <TableCell className="capitalize">{r.leave_type}</TableCell>
                 <TableCell>{r.start_date} → {r.end_date}</TableCell>
                 <TableCell>{r.days}</TableCell>

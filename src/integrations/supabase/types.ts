@@ -61,6 +61,7 @@ export type Database = {
       }
       leave_requests: {
         Row: {
+          ageing: number | null
           created_at: string
           days: number
           decided_at: string | null
@@ -75,6 +76,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          ageing?: number | null
           created_at?: string
           days: number
           decided_at?: string | null
@@ -89,6 +91,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          ageing?: number | null
           created_at?: string
           days?: number
           decided_at?: string | null

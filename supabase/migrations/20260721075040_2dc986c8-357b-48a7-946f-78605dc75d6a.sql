@@ -1,0 +1,2 @@
+DROP POLICY IF EXISTS "Signed-in view employees" ON public.employees;
+CREATE POLICY "Own or HR view employees" ON public.employees FOR SELECT TO authenticated USING (user_id = auth.uid() OR public.has_role(auth.uid(), 'hr'::app_role));

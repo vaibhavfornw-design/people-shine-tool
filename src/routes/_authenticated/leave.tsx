@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { decideLeaveRequest } from "@/lib/leave.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -27,6 +29,7 @@ function diffDays(a: string, b: string) {
 function LeavePage() {
   const { user, isHR } = useAuth();
   const qc = useQueryClient();
+  const decideFn = useServerFn(decideLeaveRequest);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ start_date: "", end_date: "", leave_type: "vacation", reason: "" });
 
@@ -67,13 +70,13 @@ function LeavePage() {
   };
 
   const decide = async (id: string, status: "approved" | "rejected") => {
-    const { error } = await supabase
-      .from("leave_requests")
-      .update({ status, decided_by: user!.id, decided_at: new Date().toISOString() })
-      .eq("id", id);
-    if (error) return toast.error(error.message);
-    toast.success(`Request ${status}`);
-    qc.invalidateQueries({ queryKey: ["leave"] });
+    try {
+      await decideFn({ data: { id, status } });
+      toast.success(`Request ${status}`);
+      qc.invalidateQueries({ queryKey: ["leave"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Failed to update request");
+    }
   };
 
   const cancel = async (id: string) => {

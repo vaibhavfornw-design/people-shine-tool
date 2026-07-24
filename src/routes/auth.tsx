@@ -72,6 +72,11 @@ function AuthPage() {
               <div><Label>Email</Label><Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
               <div><Label>Password</Label><Input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} /></div>
               <Button type="submit" className="w-full" disabled={busy}>Sign in</Button>
+              <div className="text-right">
+                <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground underline">
+                  Forgot password?
+                </Link>
+              </div>
             </form>
           </TabsContent>
           <TabsContent value="signup">

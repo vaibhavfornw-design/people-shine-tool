@@ -220,12 +220,6 @@ function Dashboard() {
         </div>
       )}
 
-      {!isHR && (
-        <Card className="mt-8 p-6">
-          <h2 className="font-semibold">Need time off?</h2>
-          <p className="text-sm text-muted-foreground mt-1">Head to the Time off tab to submit a request.</p>
-        </Card>
-      )}
     </div>
   );
 }

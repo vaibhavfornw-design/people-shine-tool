@@ -86,6 +86,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Manage your team directory and time off in one clean workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Peoplebase — HR made simple" },
+      { name: "twitter:description", content: "Manage your team directory and time off in one clean workspace." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/512b837e-9c50-4a6b-9bec-70015f39240a/id-preview-79e50a2a--bcf83716-78a3-4a41-a24d-00addee502f8.lovable.app-1784923781568.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/512b837e-9c50-4a6b-9bec-70015f39240a/id-preview-79e50a2a--bcf83716-78a3-4a41-a24d-00addee502f8.lovable.app-1784923781568.png" },
     ],
     links: [
       {
